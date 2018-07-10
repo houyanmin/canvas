@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <canvas id="canvas1" width="600" height="400" style="border:1px solid #CCC;"></canvas>
+    <canvas id="canvas2" width="600" height="400" style="border:1px solid #CCC;"></canvas>
+</body>
+</html>
+<script>
+    //等分圆
+    var canvas = document.querySelector('#canvas1');
+    var ctx = canvas.getContext('2d');
+    var w = ctx.canvas.width;
+    var h = ctx.canvas.height;
+    var num = 6;
+    var angle = Math.PI*2/num;
+    ctx.arc(300,200,100,0,angle);
+    for(var i=0;i<num;i++){
+        var startAngle = i*angle;
+        var endAngle = (i+1)*angle;
+        ctx.beginPath();
+        ctx.lineWidth = 30;
+        ctx.moveTo(w/2,h/2);
+        ctx.arc(w/2,h/2,150,startAngle,endAngle);
+        ctx.fillStyle = rgb();
+        ctx.fill();
+    }
+    function rgb(){
+        var r = Math.floor(Math.random()*256);
+        var g = Math.floor(Math.random()*256);
+        var b = Math.floor(Math.random()*256);
+        return 'rgb('+r+','+g+','+b+')'
+    }
+
+    //进度圆
+    var canvas = document.querySelector('#canvas2');
+    var ctx = canvas.getContext('2d');
+    ctx.lineWidth = 30;
+    var start = -90;
+    var end = -90;
+    var timer = setInterval(function(){
+        end+=1;
+        ctx.clearRect(0, 0, 600, 400);
+        ctx.beginPath();
+        ctx.arc(300,200,135,start*Math.PI/180,end*Math.PI/180);
+        if(end-start < 120){
+            ctx.strokeStyle = 'red';
+            ctx.fillStyle='red';
+        }else if(end-start < 240){
+            ctx.strokeStyle = 'orange';
+            ctx.fillStyle='orange';
+        }else{
+            ctx.strokeStyle = 'green';
+            ctx.fillStyle='green';
+        }
+        ctx.stroke();
+        var percenter = Math.floor((end-start)/360*100)+'%';
+        ctx.font="30px Verdana";
+        ctx.fillText(percenter,260,210);
+        if(end>=270){
+            clearInterval(timer);
+        }
+    },10)
+</script>
